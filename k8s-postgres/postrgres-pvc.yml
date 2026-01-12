@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  storageClassName: manual # Define a StorageClass que este PVC quer usar. O valor "manual" PRECISA ser o mesmo do PersistentVolume.
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # Quantidade de armazenamento que o PVC está pedindo.
+      # O Kubernetes só vai ligar este PVC a um PV
+      # que tenha, NO MÍNIMO, esse tamanho.
+      storage: 100Mi

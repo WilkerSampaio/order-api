@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  labels:
+    type: postgres-pv
+spec:
+  storageClassName: manual # "manual" indica que o PV foi criado manualmente (não dinamicamente).
+  capacity: # Define a capacidade total de armazenamento deste volume.
+    storage: 100Mi
+  accessModes: # - Pode ser montado como leitura e escrita e Apenas por UM nó do cluster por vez
+    - ReadWriteOnce
+  hostPath: # Indica que o volume usa um diretório local do nó (host). onde os dados serão armazenados fisicamente.
+    path: /db_postgres/
