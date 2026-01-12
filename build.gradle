@@ -46,6 +46,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test' //
     testImplementation 'org.junit.platform:junit-platform-launcher'// Já inclui MockMvc e outros
 
+    // Teste vai subir com banco H2
     testImplementation 'com.h2database:h2'
 }
 
