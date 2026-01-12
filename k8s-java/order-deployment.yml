@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+  labels:
+    app: order-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-java
+  template:
+    metadata:
+      labels:
+        app: order-java
+    spec:
+      containers:
+        - name: order-java
+          image: shockley09/order:2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
+          envFrom:
+            - configMapRef:
+                name: order-config
+            - secretRef:
+                name: secret-postgres
