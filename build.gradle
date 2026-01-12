@@ -1,15 +1,11 @@
 plugins {
-    id 'java' // Habilita suporte ao Java no Gradle
-    id 'org.springframework.boot' version '4.0.1'
-    // Plugin do Spring Boot: cria JAR executável, bootRun, auto-configuração
-
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
-    // Gerencia versões das dependências automaticamente (BOM do Spring)
 }
 
-group = 'com.wilker' // Grupo do projeto (package base)
-version = '0.0.1-SNAPSHOT' // Versão do projeto
-description = 'Demo project for Spring Boot' // Descrição do projeto
+group = 'com.wilker'
+version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
@@ -17,83 +13,40 @@ java {
     }
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-        // Permite que annotationProcessor (Lombok, MapStruct)
-        // funcione corretamente com compileOnly
-    }
-}
-
 repositories {
-    mavenCentral() // Repositório padrão para baixar dependências
+    mavenCentral()
 }
 
 dependencies {
-
-
-    implementation 'org.springframework.boot:spring-boot-h2console'
-    // Console web do banco H2 (acesso via /h2-console)
-    // Usado apenas em desenvolvimento
-
+    // BANCO DE DADOS
+    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // Persistência com JPA + Hibernate
-    // Repositórios, entidades, transações
 
+    // WEB & VALIDAÇÃO
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Simplificado (WebMvc já vem aqui)
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    // Validação de dados com Jakarta Validation
-    // Ex: @NotNull, @NotBlank, @Size
 
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    // Spring MVC para criar APIs REST
-    // Controllers, endpoints, JSON, DispatcherServlet
+    // DOCUMENTAÇÃO (SWAGGER)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3' // Versão estável
 
+    // LOMBOK & MAPSTRUCT (A ordem aqui importa!)
     compileOnly 'org.projectlombok:lombok'
-    // Lombok apenas em tempo de compilação
-    // Gera getters, setters, construtores, builders
-
-    runtimeOnly 'com.h2database:h2'
-    // Banco de dados H2 em memória
-    // Executado apenas em runtime (não compila)
-
     annotationProcessor 'org.projectlombok:lombok'
-    // Processador de anotações do Lombok
-    // Necessário para gerar código automaticamente
-
-    // =========================
-    // MAPSTRUCT (DTO <-> ENTITY)
-    // =========================
 
     implementation 'org.mapstruct:mapstruct:1.6.3'
-    // Biblioteca para mapeamento de objetos
-    // Converte DTOs para Entities e vice-versa
-
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-    // Gera as classes de implementação do MapStruct
 
+    // Conector necessário para Lombok + MapStruct trabalharem juntos
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    // Integra Lombok com MapStruct
-    // Evita conflitos com @Builder, @Getter, etc.
 
-    // =========================
-    // DEPENDÊNCIAS DE TESTE
-    // =========================
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-    // Testes focados na camada de persistência (Repository)
-    // Usa @DataJpaTest
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
-    // Testes de validação de dados
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-    // Testes da camada web (Controller)
-    // Usa MockMvc e @WebMvcTest
-
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // Responsável por executar os testes JUnit 5
-
+    // JSON - Suporte para datas modernas (LocalDate, LocalDateTime)
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    // TESTES
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' //
+    testImplementation 'org.junit.platform:junit-platform-launcher'// Já inclui MockMvc e outros
+
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
