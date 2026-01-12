@@ -253,7 +253,7 @@ class PedidoServiceTest {
 
         StatusException e = assertThrows(StatusException.class, ()-> pedidoService.atualizaStatusPedido(id, StatusEnum.ENVIADO));
 
-        assertThat(e.getMessage(), is("Transição inválida"));
+        assertThat(e.getMessage(), is("Transição status inválida"));
 
         verify(pedidoRepository).findById(id);
         verifyNoMoreInteractions(pedidoRepository);
